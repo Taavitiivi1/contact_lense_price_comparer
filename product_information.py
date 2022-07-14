@@ -1,6 +1,3 @@
-import functions
-
-
 class ProductInformation:
     """Class for gathering a products (lense) information"""
     _website_name = ""
