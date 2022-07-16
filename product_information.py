@@ -7,10 +7,10 @@ class ProductInformation:
     # amount? If not 6, we have to use math to get it to 6
     # free_transport?
 
-    def __init__(self, website_name, product_url, price):
+    def __init__(self, website_name, price, product_url):
         self._website_name = website_name
-        self._product_url = product_url
         self._price = price
+        self._product_url = product_url
 
     def get_website_name(self):
         return self._website_name
