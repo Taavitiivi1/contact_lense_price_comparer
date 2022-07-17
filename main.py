@@ -16,7 +16,7 @@ import webbrowser
 
 def get_url(url):
     driver.get(url)
-    time.sleep(3)  # Temporary fix for bug that raises an unknown exception
+    time.sleep(1)  # Temporary fix for bug in chrome webdriver that raises an unknown exception
     return url
 
 
@@ -107,6 +107,12 @@ def fetch_alensa():
     return ProductInformation("Alensa", price, url)
 
 
+def get_product_url(product, products):
+    for p in products:
+        if p == product:
+            return p.get_url()
+
+
 def fetch_products():
     products = [
         fetch_silmaasema(),
@@ -149,10 +155,12 @@ def build_gui(products):
                 label = tk.Label(master=frame, text=products[i].get_website_name())
             elif j == 1:
                 label = tk.Label(master=frame, text=products[i].get_price())
-            elif j == 2:
-                label = tk.Button(master=frame, text=products[i].get_url(),
-                                  command=lambda: webbrowser.open(products[i].get_url()))
+            else:
+                url_text = products[i].get_url()
+                label = tk.Button(master=frame, text=url_text,
+                                  command=lambda url_text=url_text: webbrowser.open(url_text))
             label.pack(padx=5, pady=5)
+
 
     window.mainloop()
 
@@ -161,5 +169,8 @@ if __name__ == "__main__":
     s = Service("C:\ChromeDriver\chromedriver.exe")
     driver = webdriver.Chrome(service=s)
 
-    products = build_products()
-    build_gui(products)
+    try:
+        products = build_products()
+        build_gui(products)
+    except:
+        driver.quit()
